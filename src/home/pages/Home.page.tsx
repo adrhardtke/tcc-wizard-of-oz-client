@@ -1,0 +1,68 @@
+import { SimulationStepStatus } from "@/components/SimulationStepStatus";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { History } from "lucide-react";
+import { Link } from "react-router-dom";
+
+export default function Home() {
+  return (
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="text-2xl font-medium">Olá professor Rafael</h1>
+        <p className="text-muted-foreground max-w-2xl">
+          Estamos empolgados para começar sua próxima simulação. Nosso guia
+          rápido vai te ajudar a configurar um cenário clínico e iniciar o
+          atendimento com o aluno médico.
+        </p>
+      </div>
+      <div>
+        <h2 className="text-xl font-medium">Guia Rápido</h2>
+        <p className="text-muted-foreground max-w-2xl">
+          Vamos te guiar pelos três passos essenciais para iniciar uma
+          simulação:
+        </p>
+      </div>
+
+      <SimulationStepStatus />
+      <Link to={"/nova-simulacao"} className="w-full">
+        <Button className="w-full">Nova simulação</Button>
+      </Link>
+      <Separator />
+      <div>
+        <div className="flex items-center gap-2 mb-4">
+          <History size={18} />
+          <h3 className="text-md font-medium">Histórico de Simulações</h3>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Médico</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead>Cenário</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>Joao Silva</TableCell>
+              <TableCell>25/04/2025</TableCell>
+              <TableCell>Hipoglicemia</TableCell>
+              <TableCell>Conluído</TableCell>
+              <TableCell>-</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
