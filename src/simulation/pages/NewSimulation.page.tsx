@@ -10,10 +10,62 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import {
+  MedicalHistoryMock,
+  MedicalMock,
+  MedicalSceneryMock,
+} from "@/mocks/simulation-config.mock";
+import { useSimulationConfigStore } from "@/store/simulation-config.store";
 import { ChevronLeft, Clipboard } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AddMedicalModal } from "../components/AddMedicalModal";
 
 export default function NewSimulation() {
+  const {
+    medical,
+    addMedical,
+    medicalHistory,
+    medicalScenery,
+    addMedicalScenery,
+    addMedicalHistory,
+  } = useSimulationConfigStore();
+
+  const handleAddMedical = (value: string) => {
+    const selectedMedical = MedicalMock.find((item) => item.id === value);
+    if (selectedMedical) {
+      addMedical({
+        id: selectedMedical.id,
+        name: selectedMedical.name,
+      });
+    }
+  };
+
+  const handleAddMedicalScenery = (value: string) => {
+    const selectedMedicalScenery = MedicalSceneryMock.find(
+      (item) => item.id === value
+    );
+    if (selectedMedicalScenery) {
+      addMedicalScenery({
+        id: selectedMedicalScenery.id,
+        title: selectedMedicalScenery.title,
+        list: selectedMedicalScenery.list,
+      });
+    }
+  };
+
+  const handleAddMedicalHistory = (value: string) => {
+    const selectedMedicalHistory = MedicalHistoryMock.find(
+      (item) => item.id === value
+    );
+    if (selectedMedicalHistory) {
+      addMedicalHistory({
+        id: selectedMedicalHistory.id,
+        title: selectedMedicalHistory.title,
+        list: selectedMedicalHistory.list,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -40,45 +92,62 @@ export default function NewSimulation() {
           <p className="text-muted-foreground">
             Escolha o aluno que atuará como médico nesta sessão clínica.
           </p>
-          <div className="flex items-center gap-2 mt-4">
-            <Select>
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="flex">
+              <p className="w-[180px] text-muted-foreground">
+                Aluno selecionado:
+              </p>
+              <span>{medical ? medical.name : "-"}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-2">
+            <Select onValueChange={handleAddMedical} defaultValue={medical?.id}>
               <SelectTrigger className="w-full mt-2 flex-1">
                 <SelectValue placeholder="Alunos" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Joao Silva</SelectItem>
-                <SelectItem value="dark">Maria Souza</SelectItem>
-                <SelectItem value="system">John Doe</SelectItem>
+                {MedicalMock.map((medicalItem) => (
+                  <SelectItem key={medicalItem.id} value={medicalItem.id}>
+                    {medicalItem.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <span className="text-sm text-muted-foreground">ou</span>
-            <Button variant={"link"}>Cadastro novo aluno</Button>
+            <AddMedicalModal />
           </div>
         </div>
         <Separator className="my-4" />
         <div>
           <h3 className="text-xl font-medium">Cenário clínico</h3>
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col gap-2 mt-4 mb-2">
             <div className="flex">
               <p className="w-[180px] text-muted-foreground">Cenário:</p>
-              <span>Paciente com apendicite</span>
+              <span>{medicalScenery ? medicalScenery.title : "-"}</span>
             </div>
-            <div className="flex">
-              <p className="w-[180px] text-muted-foreground">
-                Sintomas iniciais:
-              </p>
-              <span>Dor abdominal intensa, febre moderada.</span>
-            </div>
-            <Button variant={"link"} className="w-fit pl-0">
-              ver mais
-            </Button>
+            {medicalScenery &&
+              medicalScenery.list.map((item) => (
+                <div className="flex" key={item.id}>
+                  <p className="w-[180px] text-muted-foreground">
+                    {item.title}
+                  </p>
+                  <span>{item?.description}</span>
+                </div>
+              ))}
           </div>
-          <Select>
+          <Select
+            onValueChange={handleAddMedicalScenery}
+            defaultValue={medicalScenery?.id}
+          >
             <SelectTrigger className="w-full mt-2 flex-1">
               <SelectValue placeholder="Cenário clínico" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Paciente com apendicite</SelectItem>
+              {MedicalSceneryMock.map((medicalScenery) => (
+                <SelectItem key={medicalScenery.id} value={medicalScenery.id}>
+                  {medicalScenery.title}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -88,15 +157,32 @@ export default function NewSimulation() {
           <div className="flex flex-col gap-2 mt-4">
             <div className="flex">
               <p className="w-[180px] text-muted-foreground">Histórico:</p>
-              <span>Sem comorbidades conhecidas</span>
+              <span>{medicalHistory ? medicalHistory.title : "-"}</span>
+            </div>
+            <div className="flex">
+              <p className="w-[180px] text-muted-foreground">Descrição:</p>
+              <span>
+                {medicalHistory && medicalHistory.list.length > 0
+                  ? medicalHistory.list
+                      .map((history) => history.title)
+                      .join(", ")
+                  : "-"}
+              </span>
             </div>
           </div>
-          <Select>
+          <Select
+            onValueChange={handleAddMedicalHistory}
+            defaultValue={medicalHistory?.id}
+          >
             <SelectTrigger className="w-full mt-2 flex-1">
               <SelectValue placeholder="Histórico" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Sem comorbidades conhecidas</SelectItem>
+              {MedicalHistoryMock.map((medicalHistory) => (
+                <SelectItem key={medicalHistory.id} value={medicalHistory.id}>
+                  {medicalHistory.title}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -105,7 +191,12 @@ export default function NewSimulation() {
         <Card className="w-full">
           <CardContent className="flex flex-col gap-4">
             <SimulationStepStatus />
-            <Button className="w-full">Salvar e iniciar simulação</Button>
+            <Button
+              className="w-full"
+              disabled={!medical || !medicalHistory || !medicalScenery}
+            >
+              Iniciar simulação
+            </Button>
           </CardContent>
         </Card>
       </div>

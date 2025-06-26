@@ -10,10 +10,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useSimulationConfigStore } from "@/store/simulation-config.store";
 import { History } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+  const { medicalName, medicalScenery, medicalHistory } =
+    useSimulationConfigStore();
+
+  const buttonText =
+    !medicalName && !medicalScenery && !medicalHistory
+      ? "Configurar simulação"
+      : "Iniciar simulação";
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -34,7 +43,7 @@ export default function Home() {
 
       <SimulationStepStatus />
       <Link to={"/nova-simulacao"} className="w-full">
-        <Button className="w-full">Nova simulação</Button>
+        <Button className="w-full">{buttonText}</Button>
       </Link>
       <Separator />
       <div>
