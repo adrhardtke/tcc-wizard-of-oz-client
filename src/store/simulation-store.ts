@@ -8,6 +8,19 @@ export type SimulationStore = {
   lastReaction?: string;
   setLastSymptom: (symptom: string) => void;
   setLastReaction: (reaction: string) => void;
+  events: {
+    id: string;
+    type: "talk" | "reaction" | "symptom";
+    description: string;
+    timestamp: string;
+  }[];
+  addEvent: (event: {
+    id: string;
+    type: "talk" | "reaction" | "symptom";
+    description: string;
+    timestamp: string;
+  }) => void;
+  clearEvents: () => void;
 };
 
 export const useSimulationStore = create<SimulationStore>((set) => ({
@@ -17,4 +30,12 @@ export const useSimulationStore = create<SimulationStore>((set) => ({
   addSimulation: (simulation: SimulationType) => set({ simulation }),
   setLastSymptom: (symptom: string) => set({ lastSymptom: symptom }),
   setLastReaction: (reaction: string) => set({ lastReaction: reaction }),
+  addEvent: (event: {
+    id: string;
+    type: "talk" | "reaction" | "symptom";
+    description: string;
+    timestamp: string;
+  }) => set((state) => ({ events: [...state.events, event] })),
+  clearEvents: () => set({ events: [] }),
+  events: [],
 }));

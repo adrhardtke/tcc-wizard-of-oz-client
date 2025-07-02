@@ -1,12 +1,14 @@
-import { History, ScanFace, Speech } from "lucide-react";
+import { ScanFace, Speech } from "lucide-react";
 import { MdEventNote, MdExitToApp, MdSick } from "react-icons/md";
 import { SimulatorActionButton } from "./SimulatorActionButton";
 import { SimulatorButton } from "./SimulatorButton";
 import { useSimulationStore } from "@/store/simulation-store";
 import { simulationService } from "@/services/simulation-service";
+import { EventList } from "./EventList";
 
 export function SimulatorActions() {
-  const { simulation, setLastReaction, setLastSymptom } = useSimulationStore();
+  const { simulation, setLastReaction, setLastSymptom, addEvent } =
+    useSimulationStore();
 
   if (!simulation) return null;
 
@@ -25,6 +27,12 @@ export function SimulatorActions() {
     const talk = getTalkById(talk_id);
     if (talk) {
       setLastReaction(talk.description);
+      addEvent({
+        id: talk.id,
+        type: "talk",
+        description: talk.description,
+        timestamp: new Date().toISOString(),
+      });
     }
   };
 
@@ -33,6 +41,12 @@ export function SimulatorActions() {
     const reaction = getReactionById(reaction_id);
     if (reaction) {
       setLastReaction(reaction.description);
+      addEvent({
+        id: reaction.id,
+        type: "reaction",
+        description: reaction.description,
+        timestamp: new Date().toISOString(),
+      });
     }
   };
 
@@ -41,6 +55,12 @@ export function SimulatorActions() {
     const symptom = getSymptomById(symptom_id);
     if (symptom) {
       setLastSymptom(symptom.description);
+      addEvent({
+        id: symptom.id,
+        type: "symptom",
+        description: symptom.description,
+        timestamp: new Date().toISOString(),
+      });
     }
   };
 
@@ -68,16 +88,18 @@ export function SimulatorActions() {
       </div>
 
       <div className="flex gap-8">
-        <SimulatorActionButton
+        {/* <SimulatorActionButton
           icon={<History />}
           label="Histórico"
           onPress={() => null}
-        />
+        /> */}
         <SimulatorActionButton
           icon={<MdEventNote size={24} />}
           label="Eventos"
           onPress={() => null}
-        />
+        >
+          <EventList />
+        </SimulatorActionButton>
       </div>
 
       <div className="flex gap-8">
