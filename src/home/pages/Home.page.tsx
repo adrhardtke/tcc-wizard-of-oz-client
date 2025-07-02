@@ -15,16 +15,16 @@ import { History } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
-  const { medicalName, medicalScenery, medicalHistory } =
+  const { medical, medicalScenery, medicalHistory } =
     useSimulationConfigStore();
 
   const buttonText =
-    !medicalName && !medicalScenery && !medicalHistory
+    !medical && !medicalScenery && !medicalHistory
       ? "Configurar simulação"
       : "Iniciar simulação";
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 max-w-3xls">
       <div>
         <h1 className="text-2xl font-medium">Olá professor Rafael</h1>
         <p className="text-muted-foreground max-w-2xl">

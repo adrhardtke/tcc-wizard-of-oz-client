@@ -67,7 +67,7 @@ export default function NewSimulation() {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 max-w-3xl">
       <div>
         <Link
           to={"/"}
@@ -191,12 +191,14 @@ export default function NewSimulation() {
         <Card className="w-full">
           <CardContent className="flex flex-col gap-4">
             <SimulationStepStatus />
-            <Button
-              className="w-full"
-              disabled={!medical || !medicalHistory || !medicalScenery}
-            >
-              Iniciar simulação
-            </Button>
+            <Link to={"/simulacao/simulation-id-1"} className="w-full">
+              <Button
+                className="w-full"
+                disabled={!medical || !medicalHistory || !medicalScenery}
+              >
+                Iniciar simulação
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
