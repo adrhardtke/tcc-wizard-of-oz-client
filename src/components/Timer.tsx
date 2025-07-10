@@ -1,7 +1,12 @@
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-export function Timer() {
+type TimerProps = {
+  onStopTimer?: (time: string) => void;
+  isFinished?: boolean;
+};
+
+export function Timer({ onStopTimer, isFinished }: TimerProps) {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -17,6 +22,15 @@ export function Timer() {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [isRunning]);
+
+  useEffect(() => {
+    if (isFinished) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (onStopTimer) {
+        onStopTimer(formatTime(secondsElapsed));
+      }
+    }
+  }, [isFinished, secondsElapsed, onStopTimer]);
 
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);

@@ -5,13 +5,22 @@ import { SimulatorButton } from "./SimulatorButton";
 import { useSimulationStore } from "@/store/simulation-store";
 import { simulationService } from "@/services/simulation-service";
 import { EventList } from "./EventList";
+import { SimulatorPressableButton } from "./SimulatorPressableButton";
 
-export function SimulatorActions() {
-  const { simulation, setLastReaction, setLastSymptom, addEvent } =
-    useSimulationStore();
+export function SimulatorActions({ onFinish }: { onFinish: () => void }) {
+  const {
+    simulation,
+    setLastReaction,
+    setLastSymptom,
+    addEvent,
+    genericTalks,
+  } = useSimulationStore();
 
   if (!simulation) return null;
 
+  const getGenericTalkById = (id: string) => {
+    return genericTalks.find((talk) => talk.id === id);
+  };
   const getTalkById = (id: string) => {
     return simulation.talks.find((talk) => talk.id === id);
   };
@@ -25,6 +34,20 @@ export function SimulatorActions() {
   const handlePressTalk = async (talk_id: string) => {
     await simulationService.sendTalk(talk_id);
     const talk = getTalkById(talk_id);
+    if (talk) {
+      setLastReaction(talk.description);
+      addEvent({
+        id: talk.id,
+        type: "talk",
+        description: talk.description,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  };
+
+  const handlePressGenericTalk = async (talk_id: string) => {
+    await simulationService.sendTalk(talk_id);
+    const talk = getGenericTalkById(talk_id);
     if (talk) {
       setLastReaction(talk.description);
       addEvent({
@@ -65,45 +88,102 @@ export function SimulatorActions() {
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between z-20">
       <div className="flex gap-8">
-        <SimulatorActionButton
-          icon={<Speech />}
-          label="Falas"
-          data={simulation.talks}
-          onPress={handlePressTalk}
-        />
-        <SimulatorActionButton
-          icon={<ScanFace />}
-          label="Reações"
-          data={simulation.reactions}
-          onPress={handlePressReaction}
-        />
-        <SimulatorActionButton
-          icon={<MdSick size={24} />}
-          label="Sintomas"
-          data={simulation.symptoms}
-          onPress={handlePressSymptom}
-        />
+        <SimulatorActionButton icon={<Speech />} label="Falas Genéricas">
+          <div className="flex flex-col gap-4">
+            <div className="space-y-2">
+              <h4 className="leading-none font-medium">
+                Falas Genéricas - Menu de Opções
+              </h4>
+            </div>
+            <div className="space-y-2 w-full">
+              {genericTalks &&
+                genericTalks.map((actionData) => (
+                  <SimulatorPressableButton
+                    key={actionData.id}
+                    onPress={() => handlePressGenericTalk(actionData.id)}
+                  >
+                    {actionData.title}
+                  </SimulatorPressableButton>
+                ))}
+            </div>
+          </div>
+        </SimulatorActionButton>
+        <SimulatorActionButton icon={<Speech />} label="Falas Específicas">
+          <div className="flex flex-col gap-4">
+            <div className="space-y-2">
+              <h4 className="leading-none font-medium">
+                Falas - Menu de Opções
+              </h4>
+            </div>
+            <div className="space-y-2 w-full">
+              {simulation.talks &&
+                simulation.talks.map((actionData) => (
+                  <SimulatorPressableButton
+                    key={actionData.id}
+                    onPress={() => handlePressTalk(actionData.id)}
+                  >
+                    {actionData.title}
+                  </SimulatorPressableButton>
+                ))}
+            </div>
+          </div>
+        </SimulatorActionButton>
+        <SimulatorActionButton icon={<ScanFace />} label="Reações">
+          <div className="flex flex-col gap-4">
+            <div className="space-y-2">
+              <h4 className="leading-none font-medium">
+                Reações - Menu de Opções
+              </h4>
+            </div>
+            <div className="space-y-2 w-full">
+              {simulation.reactions &&
+                simulation.reactions.map((actionData) => (
+                  <SimulatorPressableButton
+                    key={actionData.id}
+                    onPress={() => handlePressReaction(actionData.id)}
+                  >
+                    {actionData.title}
+                  </SimulatorPressableButton>
+                ))}
+            </div>
+          </div>
+        </SimulatorActionButton>
+        <SimulatorActionButton icon={<MdSick size={24} />} label="Sintomas">
+          <div className="flex flex-col gap-4">
+            <div className="space-y-2">
+              <h4 className="leading-none font-medium">
+                Sintomas - Menu de Opções
+              </h4>
+            </div>
+            <div className="space-y-2 w-full">
+              {simulation.symptoms &&
+                simulation.symptoms.map((actionData) => (
+                  <SimulatorPressableButton
+                    key={actionData.id}
+                    onPress={() => handlePressSymptom(actionData.id)}
+                  >
+                    {actionData.title}
+                  </SimulatorPressableButton>
+                ))}
+            </div>
+          </div>
+        </SimulatorActionButton>
       </div>
 
       <div className="flex gap-8">
-        {/* <SimulatorActionButton
-          icon={<History />}
-          label="Histórico"
-          onPress={() => null}
-        /> */}
-        <SimulatorActionButton
-          icon={<MdEventNote size={24} />}
-          label="Eventos"
-          onPress={() => null}
-        >
+        <SimulatorActionButton icon={<MdEventNote size={24} />} label="Eventos">
           <EventList />
         </SimulatorActionButton>
       </div>
 
       <div className="flex gap-8">
-        <SimulatorButton icon={<MdExitToApp size={24} />} label="Sair" />
+        <SimulatorButton
+          icon={<MdExitToApp size={24} />}
+          label="Sair"
+          onClick={onFinish}
+        />
       </div>
     </div>
   );

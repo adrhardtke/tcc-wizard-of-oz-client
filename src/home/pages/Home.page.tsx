@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8 max-w-3xls">
       <div>
-        <h1 className="text-2xl font-medium">Olá professor Rafael</h1>
+        <h1 className="text-2xl font-medium">Olá professor</h1>
         <p className="text-muted-foreground max-w-2xl">
           Estamos empolgados para começar sua próxima simulação. Nosso guia
           rápido vai te ajudar a configurar um cenário clínico e iniciar o

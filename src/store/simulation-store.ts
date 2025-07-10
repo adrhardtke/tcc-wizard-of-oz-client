@@ -1,4 +1,4 @@
-import type { SimulationType } from "@/types";
+import type { SimulationType, TalkType } from "@/types";
 import { create } from "zustand";
 
 export type SimulationStore = {
@@ -21,6 +21,8 @@ export type SimulationStore = {
     timestamp: string;
   }) => void;
   clearEvents: () => void;
+  genericTalks: TalkType[];
+  setGenericTalks: (talks: TalkType[]) => void;
 };
 
 export const useSimulationStore = create<SimulationStore>((set) => ({
@@ -38,4 +40,6 @@ export const useSimulationStore = create<SimulationStore>((set) => ({
   }) => set((state) => ({ events: [...state.events, event] })),
   clearEvents: () => set({ events: [] }),
   events: [],
+  genericTalks: [],
+  setGenericTalks: (talks: TalkType[]) => set({ genericTalks: talks }),
 }));
