@@ -12,12 +12,19 @@ type SimulatorActionButtonProps = SimulatorButtonProps & {
 export function SimulatorActionButton({
   label,
   icon,
+  variant = "default",
+  color = "primary",
   children,
 }: SimulatorActionButtonProps) {
   return (
     <Popover>
       <PopoverTrigger>
-        <SimulatorButton label={label} icon={icon} />
+        <SimulatorButton
+          label={label}
+          icon={icon}
+          variant={variant}
+          color={color}
+        />
       </PopoverTrigger>
       <PopoverContent className={children ? "w-auto" : "w-90"}>
         {children}

@@ -90,7 +90,13 @@ export function SimulatorActions({ onFinish }: { onFinish: () => void }) {
   return (
     <div className="flex justify-between z-20">
       <div className="flex gap-8">
-        <SimulatorActionButton icon={<Speech />} label="Falas Genéricas">
+        <SimulatorActionButton icon={<MdEventNote size={24} />} label="Eventos">
+          <EventList />
+        </SimulatorActionButton>
+      </div>
+
+      <div className="flex gap-8">
+        {/* <SimulatorActionButton icon={<Speech />} label="Falas Genéricas">
           <div className="flex flex-col gap-4">
             <div className="space-y-2">
               <h4 className="leading-none font-medium">
@@ -129,7 +135,7 @@ export function SimulatorActions({ onFinish }: { onFinish: () => void }) {
                 ))}
             </div>
           </div>
-        </SimulatorActionButton>
+        </SimulatorActionButton> */}
         <SimulatorActionButton icon={<ScanFace />} label="Reações">
           <div className="flex flex-col gap-4">
             <div className="space-y-2">
@@ -169,12 +175,6 @@ export function SimulatorActions({ onFinish }: { onFinish: () => void }) {
                 ))}
             </div>
           </div>
-        </SimulatorActionButton>
-      </div>
-
-      <div className="flex gap-8">
-        <SimulatorActionButton icon={<MdEventNote size={24} />} label="Eventos">
-          <EventList />
         </SimulatorActionButton>
       </div>
 

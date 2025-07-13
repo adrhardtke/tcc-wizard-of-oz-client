@@ -1,6 +1,8 @@
 import { SimulationStepStatus } from "@/components/SimulationStepStatus";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { DrawerContent, Drawer } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -10,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TalkFlow } from "@/simulation/components/talk-flow/TalkFlow";
 import { useSimulationConfigStore } from "@/store/simulation-config.store";
 import { History } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -46,7 +49,16 @@ export default function Home() {
         <Button className="w-full">{buttonText}</Button>
       </Link>
       <Separator />
+
       <div>
+        <Drawer open={false}>
+          <DrawerContent className="w-full h-[900px]">
+            <TalkFlow />
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* <div>
         <div className="flex items-center gap-2 mb-4">
           <History size={18} />
           <h3 className="text-md font-medium">Histórico de Simulações</h3>
@@ -71,7 +83,7 @@ export default function Home() {
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </div> */}
     </div>
   );
 }
