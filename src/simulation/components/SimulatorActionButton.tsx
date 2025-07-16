@@ -4,50 +4,30 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SimulatorButton, type SimulatorButtonProps } from "./SimulatorButton";
-import { SimulatorPressableButton } from "./SimulatorPressableButton";
-import type { SimulationActionButtonType } from "@/types";
 
 type SimulatorActionButtonProps = SimulatorButtonProps & {
-  data?: SimulationActionButtonType[];
-  onPress: (id: string) => void;
   children?: React.ReactNode;
 };
 
 export function SimulatorActionButton({
   label,
   icon,
-  data,
-  onPress,
+  variant = "default",
+  color = "primary",
   children,
 }: SimulatorActionButtonProps) {
   return (
     <Popover>
       <PopoverTrigger>
-        <SimulatorButton label={label} icon={icon} />
+        <SimulatorButton
+          label={label}
+          icon={icon}
+          variant={variant}
+          color={color}
+        />
       </PopoverTrigger>
       <PopoverContent className={children ? "w-auto" : "w-90"}>
-        <div className="flex flex-col gap-4">
-          <div className="space-y-2">
-            <h4 className="leading-none font-medium">
-              {label} - Menu de Opções
-            </h4>
-          </div>
-          {children ? (
-            children
-          ) : (
-            <div className="space-y-2 w-full">
-              {data &&
-                data.map((actionData) => (
-                  <SimulatorPressableButton
-                    key={actionData.id}
-                    onPress={() => onPress(actionData.id)}
-                  >
-                    {actionData.title}
-                  </SimulatorPressableButton>
-                ))}
-            </div>
-          )}
-        </div>
+        {children}
       </PopoverContent>
     </Popover>
   );

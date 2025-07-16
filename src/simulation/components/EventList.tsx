@@ -46,8 +46,8 @@ export function EventList() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {events.map((event) => (
-          <TableRow key={event.id}>
+        {events.map((event, index) => (
+          <TableRow key={`event-${index}-${event.id}`}>
             <TableCell className="font-medium">{event.description}</TableCell>
             <TableCell>Executado</TableCell>
             <TableCell>{getEventTypeLabel(event.type)}</TableCell>

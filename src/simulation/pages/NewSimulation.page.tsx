@@ -121,17 +121,19 @@ export default function NewSimulation() {
         <div>
           <h3 className="text-xl font-medium">Cenário clínico</h3>
           <div className="flex flex-col gap-2 mt-4 mb-2">
-            <div className="flex">
-              <p className="w-[180px] text-muted-foreground">Cenário:</p>
-              <span>{medicalScenery ? medicalScenery.title : "-"}</span>
+            <div className="grid grid-cols-8">
+              <p className="col-span-2 text-muted-foreground">Cenário:</p>
+              <span className="col-span-6">
+                {medicalScenery ? medicalScenery.title : "-"}
+              </span>
             </div>
             {medicalScenery &&
               medicalScenery.list.map((item) => (
-                <div className="flex" key={item.id}>
-                  <p className="w-[180px] text-muted-foreground">
+                <div className="grid grid-cols-8" key={item.id}>
+                  <p className="col-span-2 text-muted-foreground">
                     {item.title}
                   </p>
-                  <span>{item?.description}</span>
+                  <span className="col-span-6">{item?.description}</span>
                 </div>
               ))}
           </div>

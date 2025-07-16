@@ -1,6 +1,8 @@
 import { SimulationStepStatus } from "@/components/SimulationStepStatus";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { DrawerContent, Drawer } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -10,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TalkFlow } from "@/simulation/components/talk-flow/TalkFlow";
 import { useSimulationConfigStore } from "@/store/simulation-config.store";
 import { History } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -26,7 +29,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8 max-w-3xls">
       <div>
-        <h1 className="text-2xl font-medium">Olá professor Rafael</h1>
+        <h1 className="text-2xl font-medium">Olá professor</h1>
         <p className="text-muted-foreground max-w-2xl">
           Estamos empolgados para começar sua próxima simulação. Nosso guia
           rápido vai te ajudar a configurar um cenário clínico e iniciar o
@@ -46,7 +49,16 @@ export default function Home() {
         <Button className="w-full">{buttonText}</Button>
       </Link>
       <Separator />
+
       <div>
+        <Drawer open={false}>
+          <DrawerContent className="w-full h-[900px]">
+            <TalkFlow />
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* <div>
         <div className="flex items-center gap-2 mb-4">
           <History size={18} />
           <h3 className="text-md font-medium">Histórico de Simulações</h3>
@@ -71,7 +83,7 @@ export default function Home() {
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </div> */}
     </div>
   );
 }

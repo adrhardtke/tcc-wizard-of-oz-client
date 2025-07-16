@@ -17,16 +17,16 @@ const items = [
     url: "#",
     icon: Home,
   },
-  {
-    title: "Configurações",
-    url: "#settings",
-    icon: Settings,
-  },
-  {
-    title: "Informações",
-    url: "#infos",
-    icon: Info,
-  },
+  // {
+  //   title: "Configurações",
+  //   url: "#settings",
+  //   icon: Settings,
+  // },
+  // {
+  //   title: "Informações",
+  //   url: "#infos",
+  //   icon: Info,
+  // },
 ];
 
 export function AppSidebar() {

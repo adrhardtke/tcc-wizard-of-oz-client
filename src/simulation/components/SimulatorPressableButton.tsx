@@ -1,19 +1,34 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useState, useRef } from "react";
 
 type SimulatorPressableButtonProps = {
   children?: React.ReactNode;
+  className?: string;
   onPress: () => void;
+  withAnimation?: boolean;
 };
 
 export function SimulatorPressableButton({
   children,
+  className,
   onPress,
+  withAnimation = false,
 }: SimulatorPressableButtonProps) {
+  if (withAnimation) {
+    return (
+      <SimulatorActionButtonWithAnimation
+        onPress={onPress}
+        className={className}
+      >
+        {children}
+      </SimulatorActionButtonWithAnimation>
+    );
+  }
+
   const [progress, setProgress] = useState(0);
   const [holding, setHolding] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -57,7 +72,7 @@ export function SimulatorPressableButton({
   return (
     <div className="relative">
       <Button
-        className="w-full relative overflow-hidden"
+        className={["w-full relative overflow-hidden", className].join(" ")}
         onMouseDown={startHold}
         onMouseUp={cancelHold}
         onMouseLeave={cancelHold}
@@ -66,16 +81,16 @@ export function SimulatorPressableButton({
         variant={"outline"}
       >
         <motion.div
-          className="absolute left-0 top-0 h-full bg-green-500 z-0"
+          className="absolute left-0 top-0 h-full bg-green-500 z-0 w-full"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ ease: "linear", duration: 0.1 }}
         />
-        <span className="relative z-10">
+        <span className="relative z-10 w-full">
           {progress >= 100 ? (
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center w-max">
               <Check />
-              Ação Executada
+              <p className="invisible">ação executada</p>
             </div>
           ) : (
             children
@@ -85,3 +100,32 @@ export function SimulatorPressableButton({
     </div>
   );
 }
+
+const SimulatorActionButtonWithAnimation = ({
+  onPress,
+  className,
+  children,
+}: SimulatorPressableButtonProps) => {
+  const [showButton, setShowButton] = useState(true);
+  const handlePress = () => {
+    onPress();
+    setShowButton(false);
+  };
+
+  return (
+    <AnimatePresence>
+      {showButton && (
+        <motion.button
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 500, rotate: 10 }} // anima para a direita e com leve rotação
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="w-full"
+        >
+          <SimulatorPressableButton onPress={handlePress} className={className}>
+            {children}
+          </SimulatorPressableButton>
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+};
