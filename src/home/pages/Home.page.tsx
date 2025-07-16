@@ -1,20 +1,7 @@
 import { SimulationStepStatus } from "@/components/SimulationStepStatus";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { DrawerContent, Drawer } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { TalkFlow } from "@/simulation/components/talk-flow/TalkFlow";
 import { useSimulationConfigStore } from "@/store/simulation-config.store";
-import { History } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -50,13 +37,13 @@ export default function Home() {
       </Link>
       <Separator />
 
-      <div>
+      {/* <div>
         <Drawer open={false}>
           <DrawerContent className="w-full h-[900px]">
             <TalkFlow />
           </DrawerContent>
         </Drawer>
-      </div>
+      </div> */}
 
       {/* <div>
         <div className="flex items-center gap-2 mb-4">

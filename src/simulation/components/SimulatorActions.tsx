@@ -1,4 +1,4 @@
-import { ScanFace, Speech } from "lucide-react";
+import { ScanFace } from "lucide-react";
 import { MdEventNote, MdExitToApp, MdSick } from "react-icons/md";
 import { SimulatorActionButton } from "./SimulatorActionButton";
 import { SimulatorButton } from "./SimulatorButton";
@@ -13,50 +13,15 @@ export function SimulatorActions({ onFinish }: { onFinish: () => void }) {
     setLastReaction,
     setLastSymptom,
     addEvent,
-    genericTalks,
   } = useSimulationStore();
 
   if (!simulation) return null;
 
-  const getGenericTalkById = (id: string) => {
-    return genericTalks.find((talk) => talk.id === id);
-  };
-  const getTalkById = (id: string) => {
-    return simulation.talks.find((talk) => talk.id === id);
-  };
   const getReactionById = (id: string) => {
     return simulation.reactions.find((reaction) => reaction.id === id);
   };
   const getSymptomById = (id: string) => {
     return simulation.symptoms.find((symptom) => symptom.id === id);
-  };
-
-  const handlePressTalk = async (talk_id: string) => {
-    await simulationService.sendTalk(talk_id);
-    const talk = getTalkById(talk_id);
-    if (talk) {
-      setLastReaction(talk.description);
-      addEvent({
-        id: talk.id,
-        type: "talk",
-        description: talk.description,
-        timestamp: new Date().toISOString(),
-      });
-    }
-  };
-
-  const handlePressGenericTalk = async (talk_id: string) => {
-    await simulationService.sendTalk(talk_id);
-    const talk = getGenericTalkById(talk_id);
-    if (talk) {
-      setLastReaction(talk.description);
-      addEvent({
-        id: talk.id,
-        type: "talk",
-        description: talk.description,
-        timestamp: new Date().toISOString(),
-      });
-    }
   };
 
   const handlePressReaction = async (reaction_id: string) => {

@@ -1,7 +1,3 @@
-import {
-  MedicalHistoryMock,
-  MedicalSceneryMock,
-} from "@/mocks/simulation-config.mock";
 import type {
   MedicalHistoryType,
   MedicalSceneryType,

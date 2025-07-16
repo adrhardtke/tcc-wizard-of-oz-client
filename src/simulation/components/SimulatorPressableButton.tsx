@@ -18,21 +18,10 @@ export function SimulatorPressableButton({
   onPress,
   withAnimation = false,
 }: SimulatorPressableButtonProps) {
-  if (withAnimation) {
-    return (
-      <SimulatorActionButtonWithAnimation
-        onPress={onPress}
-        className={className}
-      >
-        {children}
-      </SimulatorActionButtonWithAnimation>
-    );
-  }
-
   const [progress, setProgress] = useState(0);
   const [holding, setHolding] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+  console.log(holding)
   const holdDuration = 1000; // 1 segundos para completar
 
   const startHold = () => {
@@ -68,6 +57,19 @@ export function SimulatorPressableButton({
       setHolding(false);
     }, 1000); // Simula um atraso de 1 segundo para a ação ser confirmada
   };
+
+
+  if (withAnimation) {
+    return (
+      <SimulatorActionButtonWithAnimation
+        onPress={onPress}
+        className={className}
+      >
+        {children}
+      </SimulatorActionButtonWithAnimation>
+    );
+  }
+
 
   return (
     <div className="relative">
