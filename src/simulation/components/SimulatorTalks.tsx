@@ -76,9 +76,9 @@ export function SimulatorTalks() {
 
   return (
     <div>
-      <Card className="w-[450px] overflow-hidden">
+      <Card className="w-[450px] overflow-hidden bg-gray-900">
         <CardHeader>
-          <CardTitle>Fale com o médico</CardTitle>
+          <CardTitle className="text-white">Fale com o médico</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2 w-full">

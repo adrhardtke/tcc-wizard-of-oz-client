@@ -62,6 +62,15 @@ export default function Simulator() {
       .finally(() => {
         setIsLoading(false);
       });
+
+      const addCSS = (css: string) => document.head.appendChild(document.createElement("style")).innerHTML=css;
+
+      // Usage: 
+      addCSS("body{ overflow:hidden; }")
+
+      return () => {
+       addCSS("body{ overflow:auto; }")
+      }
   }, []);
 
   const handleFinishSimulation = async () => {
@@ -76,13 +85,13 @@ export default function Simulator() {
   if (isLoading) {
     return (
       <div className="w-screen h-screen bg-gray-900 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-foreground" />
+        <Loader2 className="w-8 h-8 animate-spin text-white" />
       </div>
     );
   }
 
   return (
-    <div className="w-screen h-screen bg-gray-900">
+    <div className="max-w-screen h-screen bg-gray-900">
       {openFinishModal && <FinishModal open={openFinishModal} timer={timer} />}
       <div className="p-8">
         <SimulatorPanel
